@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form [formGroup]="singupForm" (ngSubmit)="onSubmit()">
+        <div formGroupName="userdata">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              formControlName="username"
+              class="form-control"
+            />
+            <p
+              class="error"
+              *ngIf="
+                singupForm.get('userdata.username').invalid &&
+                singupForm.get('userdata.username').touched
+              "
+            >
+              Enter valid user name
+            </p>
+          </div>
+          <div class="form-group">
+            <label for="email">email</label>
+            <input
+              type="text"
+              id="email"
+              formControlName="email"
+              class="form-control"
+            />
+            <p
+              class="error"
+              *ngIf="
+                singupForm.get('userdata.email').invalid &&
+                singupForm.get('userdata.email').touched &&
+                singupForm.get('userdata.email').errors['required']
+              "
+            >
+              Enter email id
+            </p>
+            <p
+              class="error"
+              *ngIf="
+                singupForm.get('userdata.email').invalid &&
+                singupForm.get('userdata.email').touched &&
+                singupForm.get('userdata.email').errors['email']
+              "
+            >
+              Enter valid Email id
+            </p>
+          </div>
+        </div>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input type="radio" [value]="gender" formControlName="gender" />
+            {{ gender }}
+          </label>
+        </div>
+        <p
+          class="error"
+          *ngIf="
+            singupForm.get('gender').invalid && singupForm.get('gender').touched
+          "
+        >
+          Select gender
+        </p>
+
+        Classmates:
+        <div formArrayName="classmates">
+          <div *ngFor="let cm of classmates.controls; index as i">
+            <input [formControlName]="i" />
+
+            <p
+              class="error"
+              *ngIf="classMate(i).invalid && classMate(i).touched"
+            >
+              Classmate required
+            </p>
+          </div>
+        </div>
+
+        <br />
+        Address:
+        <div formArrayName="addresses">
+          <div
+            *ngFor="let cm of addresses.controls; index as i"
+            [formGroupName]="i"
+          >
+            <div>
+              city <input formControlName="city" />
+              <p class="error" *ngIf="city(i).invalid && city(i).touched">
+                City required
+              </p>
+            </div>
+
+            <div>
+              street
+              <input formControlName="street" />
+              <p class="error" *ngIf="street(i).invalid && street(i).touched">
+                Street required
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="resetForm(singupForm)"
+        >
+          Reset
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
