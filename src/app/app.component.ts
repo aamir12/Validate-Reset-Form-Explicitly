@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
   }
 
   resetForm(formGroup: FormGroup) {
-    formGroup.reset();
+    //formGroup.reset();
     //return  reset only work but sometimes need
     // extra effort
     Object.keys(formGroup.controls).forEach((field) => {
@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
       } else if (control instanceof FormArray) {
         for (let c of control.controls) {
           if (c instanceof FormControl) {
-            c.markAsTouched({ onlySelf: true });
+            this.resetControl(c);
           } else if (c instanceof FormGroup) {
             this.resetForm(c);
           }
@@ -105,7 +105,6 @@ export class AppComponent implements OnInit {
   }
 
   resetControl(control: FormControl) {
-    console.log(control);
     control.markAsPristine();
     control.markAsUntouched();
     //control.setErrors(null);
