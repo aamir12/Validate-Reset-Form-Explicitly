@@ -71,15 +71,21 @@ export class AppComponent implements OnInit {
       } else if (control instanceof FormGroup) {
         this.validateAllFormFields(control);
       } else if (control instanceof FormArray) {
-        for (let c of control.controls) {
-          if (c instanceof FormControl) {
-            c.markAsTouched({ onlySelf: true });
-          } else if (c instanceof FormGroup) {
-            this.validateAllFormFields(c);
-          }
-        }
+        this.validateFormArray(control);
       }
     });
+  }
+
+  validateFormArray(control: FormArray) {
+    for (let c of control.controls) {
+      if (c instanceof FormControl) {
+        c.markAsTouched({ onlySelf: true });
+      } else if (c instanceof FormGroup) {
+        this.validateAllFormFields(c);
+      } else if (c instanceof FormArray) {
+        this.validateFormArray(c);
+      }
+    }
   }
 
   resetForm(formGroup: FormGroup) {
@@ -93,15 +99,21 @@ export class AppComponent implements OnInit {
       } else if (control instanceof FormGroup) {
         this.resetForm(control);
       } else if (control instanceof FormArray) {
-        for (let c of control.controls) {
-          if (c instanceof FormControl) {
-            this.resetControl(c);
-          } else if (c instanceof FormGroup) {
-            this.resetForm(c);
-          }
-        }
+        this.resetFormArray(control);
       }
     });
+  }
+
+  resetFormArray(control: FormArray) {
+    for (let c of control.controls) {
+      if (c instanceof FormControl) {
+        this.resetControl(c);
+      } else if (c instanceof FormGroup) {
+        this.resetForm(c);
+      } else if (c instanceof FormArray) {
+        this.resetFormArray(c);
+      }
+    }
   }
 
   resetControl(control: FormControl) {
